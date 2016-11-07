@@ -22,19 +22,12 @@ public class Users {
     @Produces(MediaType.APPLICATION_JSON)
     public Response convertFtoC(@PathParam("m") String m) throws JSONException {
         JSONObject jsonObject = new JSONObject();
-        JSONObject jsonObject1 = new JSONObject();
-        JSONObject jsonObject2 = new JSONObject();
-        JSONArray jsonArray = new JSONArray();
+
 
         jsonObject.put("test", "test");
         jsonObject.put("test1", "test1");
-        jsonObject1.put("obj1", "123");
-        jsonObject2.put("obj2", "12345");
-        jsonArray.put(jsonObject1);
-        jsonArray.put(jsonObject2);
-        jsonObject.put("test2", jsonArray);
 
-        String result = "Users: " + jsonObject;
+        String result = jsonObject.toString();
 
         return Response.status(200).entity(result).build();
     }
