@@ -17,7 +17,7 @@ import java.sql.SQLException;
 @Path("/v1")
 public class Users {
     @GET
-    @Path("/users.json")
+    @Path("/userstest.json")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response convertFtoC(@PathParam("m") String m) throws JSONException {
@@ -40,26 +40,18 @@ public class Users {
     }
 
     @GET
-    @Path("/test.json")
+    @Path("/users.json")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response testDB(@PathParam("m") String m) throws JSONException, SQLException {
-        JSONObject jsonObject = new JSONObject();
-        JSONObject jsonObject1 = new JSONObject();
-        JSONObject jsonObject2 = new JSONObject();
-        JSONArray jsonArray = new JSONArray();
-
-        jsonObject.put("test", "test");
-        jsonObject.put("test1", "test1");
-        jsonObject1.put("obj1", "123");
-        jsonObject2.put("obj2", "12345");
-        jsonArray.put(jsonObject1);
-        jsonArray.put(jsonObject2);
-        jsonObject.put("test2", jsonArray);
-
-        String result = "Users: " + jsonObject;
-
-        return Response.status(200).entity(result).build();
+        String res = "";
+        UserManager manager = new UserManager();
+        for (int i=0; i< manager.getAllUsers().length(); i++){
+            manager.getAllUsers().get(i);
+             res = manager.getAllUsers().toString();
+        }
+        manager.closeConnection();
+        return Response.status(200).entity(res).build();
     }
 }
 

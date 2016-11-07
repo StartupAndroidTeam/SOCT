@@ -3,14 +3,9 @@ package com.volkov.soct.server.manager;
 import com.volkov.soct.server.Constants;
 import com.volkov.soct.server.db.DBWorker;
 import com.volkov.soct.server.model.User;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
-import javax.ws.rs.core.Response;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -29,12 +24,12 @@ public class UserManager {
         mDbWorker = new DBWorker();
     }
 
-
-
-    public void getAllUsers() throws SQLException {
+    public JSONArray getAllUsers() throws SQLException {
 
         mStatement = mDbWorker.getConnection().createStatement();
         resultSet = mStatement.executeQuery(Constants.QUERY.USERS_ALL);
+
+        JSONArray jsonArray = new JSONArray();
 
         while (resultSet.next()){
 
@@ -45,10 +40,19 @@ public class UserManager {
             user.setmTotalRepair(resultSet.getInt("totalRepair"));
             user.setmTotalRecharge(resultSet.getInt("totalRecharge"));
             user.setmPrinter(resultSet.getString("printer"));
-            System.out.println(user);
+            //System.out.println(user);
 
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("id", user.getmId());
+            jsonObject.put("name", user.getmName());
+            jsonObject.put("position", user.getmPosition());
+            jsonObject.put("totalRepair", user.getmTotalRepair());
+            jsonObject.put("totalRecharge", user.getmTotalRecharge());
+            jsonObject.put("printer", user.getmPrinter());
+
+            jsonArray.put(jsonObject);
         }
-
+        return jsonArray;
     }
     public void createUser(){
     String create = "INSERT INTO users VALUES(?,?,?,?,?)";
